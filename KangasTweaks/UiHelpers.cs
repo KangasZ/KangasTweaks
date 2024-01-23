@@ -13,6 +13,24 @@ namespace KangasTweaks;
 
 public static class UiHelpers
 {
+    public static bool DrawCheckbox(string label, ref bool boxValue, string? tooltipText = null)
+    {
+        var retStatement = false;
+        var tempVar = boxValue;
+        if (ImGui.Checkbox(label, ref tempVar))
+        {
+            boxValue = tempVar;
+            retStatement = true;
+        }
+
+        if (tooltipText != null)
+        {
+            LabeledHelpMarker("", tooltipText);
+        }
+
+        return retStatement;
+    }
+    
     public static void DrawTabs(string tabId, params (string label, uint color, Action function)[] tabs)
     {
         ImGui.BeginTabBar($"##{tabId}");
@@ -76,15 +94,32 @@ public static class UiHelpers
         }
     }
     
-    public static bool Vector4ColorSelector(string label, ref uint configColor, ImGuiColorEditFlags flags = ImGuiColorEditFlags.AlphaBar | ImGuiColorEditFlags.NoInputs)
+    public static bool Vector4ColorSelector(string label, ref uint configColor, uint? defaultColor = null, ImGuiColorEditFlags flags = ImGuiColorEditFlags.AlphaBar | ImGuiColorEditFlags.NoInputs)
     {
+        var shouldSave = false;
         var tempColor = ImGui.ColorConvertU32ToFloat4(configColor);
-        if (!ImGui.ColorEdit4(label, ref tempColor, ImGuiColorEditFlags.NoInputs)) return false;
-        configColor = ImGui.ColorConvertFloat4ToU32(tempColor);
-        return true;
+
+        if (ImGui.ColorEdit4(label, ref tempColor, ImGuiColorEditFlags.NoInputs))
+        {
+            configColor = ImGui.ColorConvertFloat4ToU32(tempColor);
+            shouldSave = true;
+        }
+        if (defaultColor.HasValue)
+        {
+            ImGui.SameLine();
+            ImGui.PushFont(UiBuilder.IconFont);
+            if (ImGui.Button($"{FontAwesomeIcon.UndoAlt.ToIconString()}##-{label}"))
+            {
+                configColor = defaultColor.Value;
+                shouldSave = true;
+            }
+            ImGui.PopFont();
+            UiHelpers.HoverTooltip($"Default: {defaultColor}");
+        }
+        return shouldSave;
     }
     
-    public static bool DrawFloatWithResetSlider(string textDiscription, ref float floatToModify, float min, float max, float defaultFloatValue, string format = "%.2f")
+    public static bool DrawFloatWithResetSlider(string textDiscription, string id, ref float floatToModify, float min, float max, float defaultFloatValue, string format = "%.2f")
     {
         bool shouldSave = false;
         if (!textDiscription.IsNullOrWhitespace())
@@ -94,11 +129,11 @@ public static class UiHelpers
         }
         ImGui.PushItemWidth(150);
 
-        shouldSave |= ImGui.SliderFloat($"##float-slider-{textDiscription}", ref floatToModify, min, max, format);
+        shouldSave |= ImGui.SliderFloat($"##float-slider-{textDiscription}-{id}", ref floatToModify, min, max, format);
         
         ImGui.SameLine();
         ImGui.PushFont(UiBuilder.IconFont);
-        if (ImGui.Button($"{FontAwesomeIcon.UndoAlt.ToIconString()}##-{textDiscription}"))
+        if (ImGui.Button($"{FontAwesomeIcon.UndoAlt.ToIconString()}##-{textDiscription}-{id}"))
         {
             floatToModify = defaultFloatValue;
             shouldSave = true;
@@ -111,13 +146,14 @@ public static class UiHelpers
     
     public static bool TrackerSettingEdit(Configuration.TrackerSettings trackerSettings, string label) {
         var shouldSave = false;
-        shouldSave |= UiHelpers.Vector4ColorSelector($"Foreground Color##{label}-foreground-color", ref trackerSettings.ForegroundColor);
-        shouldSave |= UiHelpers.Vector4ColorSelector($"Background Color##{label}-background-color", ref trackerSettings.BackgroundColor);
-        shouldSave |= UiHelpers.Vector4ColorSelector($"Border Color##{label}-outline-color", ref trackerSettings.BorderColor);
-        shouldSave |= UiHelpers.Vector4ColorSelector($"Text Color##{label}-text-color", ref trackerSettings.TextColor);
-        shouldSave |= DrawFloatWithResetSlider($"Border Thickness##{label}-border", ref trackerSettings.BorderThickness, ConfigConstants.MinBorderThickness, ConfigConstants.MaxBorderThickness, ConfigConstants.DefaultBorderThickness);
-        shouldSave |= DrawFloatWithResetSlider($"Width##{label}-width", ref trackerSettings.Width, ConfigConstants.MinTrackerWidth, ConfigConstants.MaxTrackerWidth, ConfigConstants.DefaultTrackerWidth);
-        shouldSave |= DrawFloatWithResetSlider($"Height##{label}-height", ref trackerSettings.Height, ConfigConstants.MinTrackerHeight, ConfigConstants.MaxTrackerHeight, ConfigConstants.DefaultTrackerHeight);
+        shouldSave |= ImGui.Checkbox($"Enabled##{label}-enabled", ref trackerSettings.Enabled);
+        shouldSave |= UiHelpers.Vector4ColorSelector($"Foreground Color##{label}-foreground-color", ref trackerSettings.ForegroundColor, defaultColor: ConfigConstants.Blue & ConfigConstants.Opacity60Percent);
+        shouldSave |= UiHelpers.Vector4ColorSelector($"Background Color##{label}-background-color", ref trackerSettings.BackgroundColor, defaultColor: ConfigConstants.Black & ConfigConstants.Opacity60Percent);
+        shouldSave |= UiHelpers.Vector4ColorSelector($"Border Color##{label}-outline-color", ref trackerSettings.BorderColor, defaultColor: ConfigConstants.Black & ConfigConstants.Opacity60Percent);
+        shouldSave |= UiHelpers.Vector4ColorSelector($"Text Color##{label}-text-color", ref trackerSettings.TextColor, defaultColor: ConfigConstants.White);
+        shouldSave |= DrawFloatWithResetSlider($"Border Thickness", label, ref trackerSettings.BorderThickness, ConfigConstants.MinBorderThickness, ConfigConstants.MaxBorderThickness, ConfigConstants.DefaultBorderThickness);
+        shouldSave |= DrawFloatWithResetSlider($"Width", label, ref trackerSettings.Width, ConfigConstants.MinTrackerWidth, ConfigConstants.MaxTrackerWidth, ConfigConstants.DefaultTrackerWidth);
+        shouldSave |= DrawFloatWithResetSlider($"Height", label, ref trackerSettings.Height, ConfigConstants.MinTrackerHeight, ConfigConstants.MaxTrackerHeight, ConfigConstants.DefaultTrackerHeight);
         
         return shouldSave;
     }
