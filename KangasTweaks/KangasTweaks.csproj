@@ -4,7 +4,7 @@
         <Name>Kangas Tweaks Plugin</Name>
         <Punchline>Weather tracker and daily/weekly reset tracker</Punchline>
         <Authors>KangasZ</Authors>
-        <Version>0.0.3</Version>
+        <Version>0.0.4</Version>
         <RootNamespace>KangasTweaks</RootNamespace>
         <Copyright>MIT @ KangasZ</Copyright>
     </PropertyGroup>
