@@ -7,6 +7,7 @@ using Dalamud.Game.Command;
 using Dalamud.Game.Gui;
 using Dalamud.Plugin;
 using Dalamud.Plugin.Services;
+using KangasTweaks.TrackerModule;
 using KangasTweaks.WeatherModule;
 using Lumina.Excel;
 using Lumina.Excel.GeneratedSheets;
@@ -27,6 +28,8 @@ public class KangasTweaks : IDalamudPlugin
     private readonly IDataManager dataManager;
 
     private readonly WeatherManager weatherModule;
+
+    private readonly ResetTracker resetTracker;
     //private readonly 
 
     public KangasTweaks(
@@ -45,17 +48,18 @@ public class KangasTweaks : IDalamudPlugin
         this.dataManager = dataManager;
         this.weatherModule = new WeatherManager(dataManager);
         this.imageStore = new ImageStore(pluginInterface, textureProvider);
-
+        this.resetTracker = new ResetTracker(pluginInterface, this.configuration);
         
         this.weatherUi = new WeatherUi(pluginInterface, configuration, clientState, this.imageStore, this.weatherModule);
-        this.pluginCommands = new PluginCommands(commandManager, weatherUi, configuration);
+        this.pluginCommands = new PluginCommands(commandManager, weatherUi, configuration, this.resetTracker);
         // No fail check
     }
 
 
     public void Dispose()
     {
+        resetTracker.Dispose();
         weatherUi.Dispose();
-        pluginCommands.Dispose();
+        pluginCommands.Dispose(); 
     }
 }

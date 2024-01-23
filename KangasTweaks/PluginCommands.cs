@@ -3,6 +3,7 @@ using System.Text.RegularExpressions;
 using Dalamud.Game.Command;
 using Dalamud.Plugin.Services;
 using KangasTweaks;
+using KangasTweaks.TrackerModule;
 using KangasTweaks.WeatherModule;
 
 namespace KangasTweaks;
@@ -12,9 +13,11 @@ public class PluginCommands : IDisposable
     private readonly ICommandManager commandManager;
     private readonly WeatherUi weatherUi;
     private readonly Configuration configInterface;
+    private readonly ResetTracker resetTracker;
 
-    public PluginCommands(ICommandManager commandManager, WeatherUi weatherUi, Configuration configuration)
+    public PluginCommands(ICommandManager commandManager, WeatherUi weatherUi, Configuration configuration, ResetTracker resetTracker)
     {
+        this.resetTracker = resetTracker;
         this.weatherUi = weatherUi;
         this.commandManager = commandManager;
         this.configInterface = configuration;
@@ -23,8 +26,18 @@ public class PluginCommands : IDisposable
             HelpMessage = "Opens Weather Menu",
             ShowInHelp = true
         });
+        this.commandManager.AddHandler("/ktracker", new CommandInfo(TrackerCommand)
+        {
+            HelpMessage = "Opens Weekly and Daily Tracker Menu",
+            ShowInHelp = true
+        });
     }
 
+    private void TrackerCommand(string command, string args)
+    {
+        resetTracker.ShowTrackerConfigWindow();
+    }
+    
     private void WeatherCommand(string command, string args)
     {
         weatherUi.OpenUi();
@@ -50,5 +63,6 @@ public class PluginCommands : IDisposable
     public void Dispose()
     {
         commandManager.RemoveHandler("/kweather");
+        commandManager.RemoveHandler("/ktracker");
     }
 }

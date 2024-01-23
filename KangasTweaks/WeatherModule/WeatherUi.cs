@@ -51,11 +51,11 @@ public class WeatherUi
             return;
         }
 
-        var size = new Vector2(405, 440);
+        var size = new Vector2(600, 600);
         ImGui.SetNextWindowSize(size, ImGuiCond.FirstUseEver);
         ImGui.SetNextWindowSizeConstraints(size, new Vector2(float.MaxValue, float.MaxValue));
 
-        if (ImGui.Begin("Kangas Tweaks Plugin", ref mainWindowVisible))
+        if (ImGui.Begin("Kangas Tweaks Weather##weather-tracker-main", ref mainWindowVisible))
         {
             /*foreach (var territory in kangasTweaksPlugin.territoryTypes)
             {
