@@ -7,6 +7,7 @@ using Dalamud.Game.Command;
 using Dalamud.Game.Gui;
 using Dalamud.Plugin;
 using Dalamud.Plugin.Services;
+using KangasTweaks.TimerModule;
 using KangasTweaks.TrackerModule;
 using KangasTweaks.WeatherModule;
 using Lumina.Excel;
@@ -30,6 +31,8 @@ public class KangasTweaks : IDalamudPlugin
     private readonly WeatherManager weatherModule;
 
     private readonly ResetTracker resetTracker;
+
+    private readonly TimerManager timerManager;
     //private readonly 
 
     public KangasTweaks(
@@ -39,8 +42,10 @@ public class KangasTweaks : IDalamudPlugin
         ICondition condition,
         IClientState clientState,
         IGameGui gameGui,
+        IChatGui chatGui,
         IDataManager dataManager,
-        ITextureProvider textureProvider)
+        ITextureProvider textureProvider,
+        IPluginLog pluginLog)
     {
         this.pluginInterface = pluginInterface;
         this.configuration = this.pluginInterface.GetPluginConfig() as Configuration ?? new Configuration();
@@ -49,9 +54,9 @@ public class KangasTweaks : IDalamudPlugin
         this.weatherModule = new WeatherManager(dataManager);
         this.imageStore = new ImageStore(pluginInterface, textureProvider);
         this.resetTracker = new ResetTracker(pluginInterface, this.configuration);
-        
+        this.timerManager = new TimerManager(chatGui, pluginLog);
         this.weatherUi = new WeatherUi(pluginInterface, configuration, clientState, this.imageStore, this.weatherModule);
-        this.pluginCommands = new PluginCommands(commandManager, weatherUi, configuration, this.resetTracker);
+        this.pluginCommands = new PluginCommands(commandManager, weatherUi, configuration, this.resetTracker, timerManager, chatGui);
         // No fail check
     }
 
