@@ -110,10 +110,11 @@ public class ResetTracker : IDisposable
         if (ImGui.Begin("Kangas Tweaks Tracker##reset-tracker-config", ref configWindowVisible))
         {
             DrawAllTrackerSettings();
-            var nextWeeklyResetTime = NextWeeklyResetTime();
-            var timeUntilWeeklyReset = nextWeeklyResetTime - DateTime.UtcNow;
+            var now = DateTime.UtcNow;
+            var nextWeeklyResetTime = NextWeeklyResetTime(now);
+            var timeUntilWeeklyReset = nextWeeklyResetTime - now;
             var nextDailyResetTime = NextDailyResetTime();
-            var timeUntilDailyReset = nextDailyResetTime - DateTime.UtcNow;
+            var timeUntilDailyReset = nextDailyResetTime - now;
             ImGui.Text("Weekly Reset Time: " + nextWeeklyResetTime.ToLocalTime());
             ImGui.Text("Time until weekly reset: " + timeUntilWeeklyReset.ToString(@"dd\:hh\:mm\:ss"));
             ImGui.Text("Daily Reset Time: " + nextDailyResetTime.ToLocalTime());
@@ -178,17 +179,16 @@ public class ResetTracker : IDisposable
             configuration.DailyTrackerSettings.BorderThickness, (float)dailyProgress);
     }
 
-    private DateTime NextWeeklyResetTime()
+    private DateTime NextWeeklyResetTime(DateTime now)
     {
-        var now = DateTime.UtcNow;
         var daysUntilNextTuesday = ((int)DayOfWeek.Tuesday - (int)now.DayOfWeek + 7) % 7;
-        if (now.DayOfWeek == DayOfWeek.Tuesday)
-        {
-            daysUntilNextTuesday = 7;
-        }
 
         var nextWeeklyResetTime =
             new DateTime(now.Year, now.Month, now.Day, 8, 0, 0, DateTimeKind.Utc).AddDays(daysUntilNextTuesday);
+        if (now > nextWeeklyResetTime)
+        {
+            return nextWeeklyResetTime.AddDays(7);
+        }
         return nextWeeklyResetTime;
     }
 
@@ -198,7 +198,8 @@ public class ResetTracker : IDisposable
         var now = DateTime.UtcNow;
 
 
-        var nextWeeklyResetTime = NextWeeklyResetTime();
+        var nextWeeklyResetTime = NextWeeklyResetTime(now);
+        PluginLog.Verbose("Now: {now}, Next: {next}", now.ToString(), nextWeeklyResetTime.ToString());
         var timeUntilWeeklyReset = nextWeeklyResetTime - now;
 
         var weeklyProgress = 1 - (timeUntilWeeklyReset.TotalSeconds / (7 * 24 * 60 * 60));
