@@ -199,7 +199,6 @@ public class ResetTracker : IDisposable
 
 
         var nextWeeklyResetTime = NextWeeklyResetTime(now);
-        PluginLog.Verbose("Now: {now}, Next: {next}", now.ToString(), nextWeeklyResetTime.ToString());
         var timeUntilWeeklyReset = nextWeeklyResetTime - now;
 
         var weeklyProgress = 1 - (timeUntilWeeklyReset.TotalSeconds / (7 * 24 * 60 * 60));
