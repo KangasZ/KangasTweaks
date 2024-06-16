@@ -202,10 +202,10 @@ public class WeatherUi
         //        ImGui.Text($"{EorzeaWeather.ToEorzeaTime(DateTime.Now):d MMM yyyy hh:mm tt}");
 
         var time = EorzeaWeather.LastWeatherIntervalFromIrlTime(
-            DateTime.Now.AddSeconds(-10 * EorzeaWeather.EIGHT_EORZEAN_HOURS_IN_IRL_SECONDS));
-        var now = DateTime.Now;
+            DateTime.UtcNow.AddSeconds(-5 * EorzeaWeather.EIGHT_EORZEAN_HOURS_IN_IRL_SECONDS));
+        var now = DateTime.UtcNow;
 
-        for (var i = 0; i < 80; i++)
+        for (var i = 0; i < 60; i++)
         {
             if (i % 3 == 0)
             {
@@ -219,7 +219,7 @@ public class WeatherUi
 
             var iconId = weather.Icon;
             var iconActual = imageStore.GetIcon(iconId);
-            ImGui.Text($"{time:hh:mm tt}");
+            ImGui.Text($"{time.ToLocalTime():hh:mm tt}");
             ImGui.SameLine();
             ImGui.Image(iconActual.ImGuiHandle, new System.Numerics.Vector2(20, 20));
             ImGui.SameLine();

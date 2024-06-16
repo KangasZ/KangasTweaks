@@ -26,19 +26,17 @@ public class EorzeaWeather
 
     public static int CalculateChance(DateTime irlTime)
     {
-        var unixTime = (irlTime.ToUniversalTime() - ZeroDay).TotalSeconds;
-        var eorzeanHours = MathF.Floor((float)unixTime / 175);
-        var eorzeanDays = MathF.Floor((float)eorzeanHours / 24);
+        var unix = (int)(irlTime.ToUniversalTime() - ZeroDay).TotalSeconds;
+        var bell = unix / 175;
+        var increment = ((uint)(bell + 8 - (bell % 8))) % 24;
 
-        var timeChunk = (eorzeanHours % 24) - (eorzeanHours % 8);
-        timeChunk = (timeChunk + 8) % 24;
+        var totalDays = (uint)(unix / 4200);
+        var calcBase = (totalDays * 100) + increment;
 
-        var seed = (int)(eorzeanDays * 100 + timeChunk);
-        var step1 = (seed << 11) ^ seed;
+        var step1 = (calcBase << 11) ^ calcBase;
         var step2 = (step1 >> 8) ^ step1;
 
-        var weatherChance = step2 % 100;
-        return weatherChance;
+        return (int)(step2 % 100);
     }
     
     public static uint Forecast(IEnumerable<(uint, uint)> weatherCollection, int weatherChance) => weatherCollection.Where(x => weatherChance < x.Item1).Select(x => x.Item2).FirstOrDefault();
