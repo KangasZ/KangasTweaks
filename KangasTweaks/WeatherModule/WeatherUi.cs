@@ -202,7 +202,7 @@ public class WeatherUi
         //        ImGui.Text($"{EorzeaWeather.ToEorzeaTime(DateTime.Now):d MMM yyyy hh:mm tt}");
 
         var time = EorzeaWeather.LastWeatherIntervalFromIrlTime(
-            DateTime.UtcNow.AddSeconds(-5 * EorzeaWeather.EIGHT_EORZEAN_HOURS_IN_IRL_SECONDS));
+            DateTime.UtcNow.AddSeconds(-6 * EorzeaWeather.EIGHT_EORZEAN_HOURS_IN_IRL_SECONDS));
         var now = DateTime.UtcNow;
 
         for (var i = 0; i < 60; i++)
