@@ -12,13 +12,13 @@ namespace KangasTweaks.WeatherModule;
 public class WeatherUi
 {
     private readonly Configuration configInterface;
-    private readonly DalamudPluginInterface dalamudPluginInterface;
+    private readonly IDalamudPluginInterface dalamudPluginInterface;
     private bool mainWindowVisible = false;
     private readonly IClientState clientState;
     private readonly ImageStore imageStore;
     private readonly WeatherManager weatherManager;
 
-    public WeatherUi(DalamudPluginInterface dalamudPluginInterface,
+    public WeatherUi(IDalamudPluginInterface dalamudPluginInterface,
         Configuration configInterface, IClientState clientState, ImageStore imageStore, WeatherManager weatherManager)
     {
         this.imageStore = imageStore;

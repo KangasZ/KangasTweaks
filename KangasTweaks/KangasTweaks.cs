@@ -21,7 +21,7 @@ public class KangasTweaks : IDalamudPlugin
 
     private WeatherUi weatherUi;
     private readonly Configuration configuration;
-    private readonly DalamudPluginInterface pluginInterface;
+    private readonly IDalamudPluginInterface pluginInterface;
     private readonly PluginCommands pluginCommands;
 
     private readonly ImageStore imageStore;
@@ -36,7 +36,7 @@ public class KangasTweaks : IDalamudPlugin
     //private readonly 
 
     public KangasTweaks(
-        DalamudPluginInterface pluginInterface,
+        IDalamudPluginInterface pluginInterface,
         ICommandManager commandManager,
         IObjectTable objectTable,
         ICondition condition,

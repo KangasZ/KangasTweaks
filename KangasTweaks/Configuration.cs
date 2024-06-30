@@ -31,11 +31,11 @@ public class Configuration : IPluginConfiguration
     public bool SeparateTrackers = false;
     public bool Clickthrough = false;
     public bool ShowBackground = true;
-    [NonSerialized] private DalamudPluginInterface? pluginInterface;
+    [NonSerialized] private IDalamudPluginInterface? pluginInterface;
     
     
 
-    public void Initialize(DalamudPluginInterface pluginInterface)
+    public void Initialize(IDalamudPluginInterface pluginInterface)
     {
         this.pluginInterface = pluginInterface;
     }

@@ -15,9 +15,9 @@ public class ResetTracker : IDisposable
     //private readonly DateTime DailyResetTime = new DateTime(2024, 1, 23, 15, 0, 0, DateTimeKind.Utc); 3PM UTC, Daily
     private readonly Configuration configuration;
     private bool configWindowVisible = false;
-    private readonly DalamudPluginInterface dalamudPluginInterface;
+    private readonly IDalamudPluginInterface dalamudPluginInterface;
 
-    public ResetTracker(DalamudPluginInterface dalamudPluginInterface, Configuration configuration)
+    public ResetTracker(IDalamudPluginInterface dalamudPluginInterface, Configuration configuration)
     {
         this.dalamudPluginInterface = dalamudPluginInterface;
         this.configuration = configuration;
