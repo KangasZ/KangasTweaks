@@ -40,14 +40,29 @@ public class WeatherManager
         return GetWeatherRatesFromTerritory(territory);
     }
     
+    /** Note for my own sanity:
+     * {
+     *    weatherRate: {
+     *       rate: [
+     *          10, 25, 10, 25, 30
+     *       ],
+     *       weather: [
+     *           { fair skies },
+     *           { heat waves },
+     *           { etc },
+     *           { etc },
+     *           { etc }
+     *      ]
+     *    }
+     * }
+     */
     
     public IEnumerable<(uint, uint)> GetWeatherRatesFromTerritory(TerritoryType territoryType)
     {
-        pluginLog.Information(territoryType.WeatherRate.ToString());
         var weatherRate = weatherRates[territoryType.WeatherRate];
         var dc = new List<(uint, uint)>();
         var counter = 0;
-        // Wtf is this, why are you like this, why did you do this
+        // Wtf is this, why are you like this, why did you do this, who hurt you, just combine the rates and the weather objects grrr grr
         var rates = weatherRate.Rate.Where(x => x > 0).ToArray();
         var p = 0;
         for (int i = 0; i < rates.Length; i++)
