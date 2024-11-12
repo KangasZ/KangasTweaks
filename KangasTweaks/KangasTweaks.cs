@@ -11,7 +11,6 @@ using KangasTweaks.TimerModule;
 using KangasTweaks.TrackerModule;
 using KangasTweaks.WeatherModule;
 using Lumina.Excel;
-using Lumina.Excel.GeneratedSheets;
 
 namespace KangasTweaks;
 
@@ -51,7 +50,7 @@ public class KangasTweaks : IDalamudPlugin
         this.configuration = this.pluginInterface.GetPluginConfig() as Configuration ?? new Configuration();
         this.configuration.Initialize(this.pluginInterface);
         this.dataManager = dataManager;
-        this.weatherModule = new WeatherManager(dataManager);
+        this.weatherModule = new WeatherManager(dataManager, pluginLog);
         this.imageStore = new ImageStore(pluginInterface, textureProvider);
         this.resetTracker = new ResetTracker(pluginInterface, this.configuration);
         this.timerManager = new TimerManager(chatGui, pluginLog);

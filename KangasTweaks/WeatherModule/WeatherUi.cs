@@ -5,7 +5,7 @@ using Dalamud.Plugin;
 using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Common.Math;
 using ImGuiNET;
-using Lumina.Excel.GeneratedSheets;
+using Lumina.Excel.Sheets;
 
 namespace KangasTweaks.WeatherModule;
 
@@ -85,7 +85,7 @@ public class WeatherUi
             }
             else
             {
-                placeholder = currTerritory.PlaceName.Value.Name.RawString;
+                placeholder = currTerritory.PlaceName.Value.Name.ToString();
             }
             ImGui.Text("Hint: Right click on a zone to favorite it.");
             ImGui.PushItemWidth(400);
@@ -99,11 +99,11 @@ public class WeatherUi
                     string selectableText;
                     if (favoritedZonesContains)
                     {
-                        selectableText = $"★ {zone.PlaceName.Value.Name.RawString}";
+                        selectableText = $"★ {zone.PlaceName.Value.Name.ToString()}";
                     }
                     else
                     {
-                        selectableText = zone.PlaceName.Value.Name.RawString;
+                        selectableText = zone.PlaceName.Value.Name.ToString();
                     }
                     if (ImGui.Selectable(selectableText, isSelected))
                     {
@@ -113,7 +113,7 @@ public class WeatherUi
 
                     if (ImGui.BeginPopupContextItem()) // <-- use last item id as popup id
                     {
-                        ImGui.Text($"{territoryList[n].PlaceName.Value.Name.RawString}");
+                        ImGui.Text($"{territoryList[n].PlaceName.Value.Name.ToString()}");
                         if (configInterface.FavoritedZones.Contains(territoryList[n].RowId))
                         {
                             if (ImGui.Button("Remove From Favorites"))
@@ -168,7 +168,7 @@ public class WeatherUi
 
     private void DrawWeatherForZone(TerritoryType territoryType)
     {
-        ImGui.Text(territoryType.PlaceName.Value.Name.RawString);
+        ImGui.Text(territoryType.PlaceName.Value.Name.ToString());
         var maxColumns = 3;
         if (ImGui.BeginTable("TrackerTable", maxColumns,
                 ImGuiTableFlags.Resizable | ImGuiTableFlags.BordersInnerH | ImGuiTableFlags.BordersV |
@@ -223,7 +223,7 @@ public class WeatherUi
             ImGui.SameLine();
             ImGui.Image(iconActual.ImGuiHandle, new System.Numerics.Vector2(20, 20));
             ImGui.SameLine();
-            ImGui.Text($"{weather.Name.RawString}");
+            ImGui.Text($"{weather.Name.ToString()}");
             var nextTime = time.AddSeconds(EorzeaWeather.EIGHT_EORZEAN_HOURS_IN_IRL_SECONDS);
             if (time < now && nextTime > now)
             {
