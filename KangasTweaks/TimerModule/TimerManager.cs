@@ -41,17 +41,17 @@ public class TimerManager
         if (source is TimerWrapper timer)
         {
             timer.Stop();
-            UIModule.PlayChatSoundEffect(1);
-            UIModule.PlayChatSoundEffect(2);
-            UIModule.PlayChatSoundEffect(3);
-            UIModule.PlayChatSoundEffect(4);
-            UIModule.PlayChatSoundEffect(5);
-            UIModule.PlayChatSoundEffect(6);
-            UIModule.PlayChatSoundEffect(7);
-            UIModule.PlayChatSoundEffect(8);
-            UIModule.PlayChatSoundEffect(9);
-            UIModule.PlayChatSoundEffect(10);
-            UIModule.PlayChatSoundEffect(11);
+            UIGlobals.PlayChatSoundEffect(1);
+            UIGlobals.PlayChatSoundEffect(2);
+            UIGlobals.PlayChatSoundEffect(3);
+            UIGlobals.PlayChatSoundEffect(4);
+            UIGlobals.PlayChatSoundEffect(5);
+            UIGlobals.PlayChatSoundEffect(6);
+            UIGlobals.PlayChatSoundEffect(7);
+            UIGlobals.PlayChatSoundEffect(8);
+            UIGlobals.PlayChatSoundEffect(9);
+            UIGlobals.PlayChatSoundEffect(10);
+            UIGlobals.PlayChatSoundEffect(11);
 
             
             var seString = new SeStringBuilder();
