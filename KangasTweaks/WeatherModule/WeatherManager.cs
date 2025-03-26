@@ -59,7 +59,7 @@ public class WeatherManager
     
     public IEnumerable<(uint, uint)> GetWeatherRatesFromTerritory(TerritoryType territoryType)
     {
-        var weatherRate = weatherRates[territoryType.WeatherRate];
+        var weatherRate = weatherRates[territoryType.WeatherRate.RowId];
         var dc = new List<(uint, uint)>();
         var counter = 0;
         // Wtf is this, why are you like this, why did you do this, who hurt you, just combine the rates and the weather objects grrr grr
