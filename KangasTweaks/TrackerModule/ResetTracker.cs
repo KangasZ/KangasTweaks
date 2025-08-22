@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Numerics;
+using Dalamud.Bindings.ImGui;
 using Dalamud.Logging;
 using Dalamud.Plugin;
-using Dalamud.Plugin.Services;
-using ImGuiNET;
-using KangasTweaks.Constants;
+
 
 namespace KangasTweaks.TrackerModule;
 

@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Dalamud.Bindings.ImGui;
 using Dalamud.Plugin;
 using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Common.Math;
-using ImGuiNET;
 using Lumina.Excel.Sheets;
 
 namespace KangasTweaks.WeatherModule;
@@ -111,7 +111,7 @@ public class WeatherUi
                         configInterface.Save();
                     }
 
-                    if (ImGui.BeginPopupContextItem()) // <-- use last item id as popup id
+                    if (ImGui.BeginPopupContextItem("ididididid")) // <-- use last item id as popup id
                     {
                         ImGui.Text($"{territoryList[n].PlaceName.Value.Name.ToString()}");
                         if (configInterface.FavoritedZones.Contains(territoryList[n].RowId))
@@ -221,7 +221,7 @@ public class WeatherUi
             var iconActual = imageStore.GetIcon(iconId);
             ImGui.Text($"{time.ToLocalTime():hh:mm tt}");
             ImGui.SameLine();
-            ImGui.Image(iconActual.ImGuiHandle, new System.Numerics.Vector2(20, 20));
+            ImGui.Image(iconActual.Handle, new System.Numerics.Vector2(20, 20));
             ImGui.SameLine();
             ImGui.Text($"{weather.Name.ToString()}");
             var nextTime = time.AddSeconds(EorzeaWeather.EIGHT_EORZEAN_HOURS_IN_IRL_SECONDS);

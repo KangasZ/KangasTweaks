@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Drawing;
 using System.Globalization;
 using System.Numerics;
+using Dalamud.Bindings.ImGui;
 using Dalamud.Interface;
 using Dalamud.Interface.Components;
-using Dalamud.Logging;
 using Dalamud.Utility;
-using ImGuiNET;
+
 using KangasTweaks.Constants;
 
 namespace KangasTweaks;
@@ -61,11 +60,11 @@ public static class UiHelpers
         var cursorScreenPos = ImGui.GetCursorScreenPos() + new Vector2(borderThickness, 0);
         windowDrawList.AddRectFilled(cursorScreenPos,
             cursorScreenPos + size,
-            bgColor, 0);
+            bgColor, (ImDrawFlags)0);
 
         windowDrawList.AddRectFilled(cursorScreenPos,
             cursorScreenPos + filledSize,
-            fgColor, 0);
+            fgColor, (ImDrawFlags)0);
 
         if (borderThickness > 0)
         {
